@@ -1,0 +1,139 @@
+{% extends 'cuentas/base.html' %}
+{% load static %} {# ¡Importante: Añadir esta línea para usar {% static %} #}
+
+{% block title %}Comidas Rápidas{% endblock %}
+
+{% block content %}
+<h1 class="text-center" style="color: white;">Comidas Rápidas </h1>
+<h2 class="text-center" style="color: white;">Pruébalas y disfruta de la rapidez en cada bocado.</h2>
+
+<style>
+    /* Estilos del body definidos aquí. Considera mover esto a un archivo CSS separado o a tu base.html */
+    body {
+        background: #e95009;
+        min-height: 100vh;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.2s ease;
+        margin-bottom: 20px; /* Añadido margen inferior para separación entre filas en pantallas pequeñas */
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .btn-success {
+        background-color: rgb(255, 0, 0);
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: rgb(200, 0, 0);
+    }
+
+    /* Asegura que el contenido de la tarjeta tenga espacio para el botón "Pedir" */
+    .card-body.pb-5 {
+        padding-bottom: 70px !important; /* Ajusta este valor si el botón se sale o queda muy apretado */
+    }
+
+    /* Ajuste para el botón en la posición absoluta */
+    .card .position-absolute {
+        bottom: 15px; /* Ajusta la distancia desde la parte inferior */
+    }
+</style>
+
+<div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center"> {# Añadido justify-content-center para centrar las tarjetas si no llenan la fila #}
+
+    {# Tarjeta Hamburguesa #}
+    <div class="col">
+        <div class="card h-100 position-relative">
+            <img src="{% static 'img/Hamburguesa.png' %}" {# ¡CORREGIDO! Uso de {% static %} #}
+                class="card-img-top img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Hamburguesa">
+            <div class="card-body pb-5">
+                <h5 class="card-title">Hamburguesa</h5>
+                <p class="card-text">Jugosa hamburguesa de carne con queso, lechuga y tomate.</p>
+            </div>
+            <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3">
+                <a href="{% url 'formulario' %}" class="btn btn-success"
+                    style="border-radius: 5px; background-color:rgb(255, 0, 0);">Pedir</a>
+            </div>
+            {# Eliminado el botón "Pedir" duplicado #}
+        </div>
+    </div>
+
+    {# Tarjeta Choripapa #}
+    <div class="col">
+        <div class="card h-100 position-relative">
+            <img src="{% static 'img/Choripapa.png' %}" {# ¡CORREGIDO! Uso de {% static %} #}
+                class="card-img-top img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Choripapa">
+            <div class="card-body pb-5">
+                <h5 class="card-title">Choripapa</h5>
+                <p class="card-text">Chorizo y papas fritas, una combinación irresistible.</p>
+            </div>
+            <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3">
+                <a href="{% url 'formulario' %}" class="btn btn-success"
+                    style="border-radius: 5px; background-color:rgb(255, 0, 0);">Pedir</a>
+            </div>
+            {# Eliminado el botón "Pedir" duplicado #}
+        </div>
+    </div>
+    
+    {# Tarjeta Perro Caliente #}
+    <div class="col">
+        <div class="card h-100 position-relative">
+            <img src="{% static 'img/Perro Caliente.png' %}" {# ¡CORREGIDO! Uso de {% static %} #}
+                class="card-img-top img-fluid w-100" style="height: 250px; object-fit: cover;"
+                alt="Perro Caliente">
+            <div class="card-body pb-5">
+                <h5 class="card-title">Perro Caliente</h5>
+                <p class="card-text">Deliciosos perros calientes con salchicha de alta calidad y tus salsas favoritas.</p>
+            </div>
+            <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3">
+                <a href="{% url 'formulario' %}" class="btn btn-success"
+                    style="border-radius: 5px; background-color:rgb(255, 0, 0);">Pedir</a>
+            </div>
+            {# Eliminado el botón "Pedir" duplicado #}
+        </div>
+    </div>
+
+    {# Tarjeta Salchipapa - ¡Ahora dentro de la fila correcta! #}
+    <div class="col">
+        <div class="card h-100 position-relative">
+            <img src="{% static 'img/Salchipapa.png' %}" {# ¡CORREGIDO! Uso de {% static %} #}
+                class="card-img-top img-fluid w-100" style="height: 250px; object-fit: cover;"
+                alt="Salchipapa">
+            <div class="card-body pb-5">
+                <h5 class="card-title">Salchipapa</h5>
+                <p class="card-text">Crujientes papas fritas con trozos de salchicha y salsas.</p>
+            </div>
+            <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3">
+                <a href="{% url 'formulario' %}" class="btn btn-success"
+                    style="border-radius: 5px; background-color:rgb(255, 0, 0);">Pedir</a>
+            </div>
+            {# Eliminado el botón "Pedir" duplicado #}
+        </div>
+    </div>
+
+    {# Tarjeta Arepa Rellena - ¡Añadida para completar el menú! #}
+    <div class="col">
+        <div class="card h-100 position-relative">
+            {# Asegúrate de tener una imagen para la Arepa Rellena en static/img/ArepaRellena.png #}
+            <img src="{% static 'img/Arepa Rellena.png' %}" 
+                class="card-img-top img-fluid w-100" style="height: 250px; object-fit: cover;"
+                alt="Arepa Rellena">
+            <div class="card-body pb-5">
+                <h5 class="card-title">Arepa Rellena</h5>
+                <p class="card-text">Deliciosa arepa asada rellena de carne desmechada y queso.</p>
+            </div>
+            <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3">
+                <a href="{% url 'formulario' %}" class="btn btn-success"
+                    style="border-radius: 5px; background-color:rgb(255, 0, 0);">Pedir</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

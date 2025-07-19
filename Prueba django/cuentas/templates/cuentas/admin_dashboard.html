@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head><title>Panel de Administración</title></head>
+<body>
+    <h1>Bienvenido Superusuario {{ request.user.username }}</h1>
+    <p><a href="{% url 'logout' %}">Cerrar sesión</a></p>
+</body>
+</html>

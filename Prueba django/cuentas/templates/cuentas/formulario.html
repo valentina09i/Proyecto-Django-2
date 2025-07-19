@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pedido</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7a307;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .logout-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    h2 {
+      text-align: center;
+      color: #c0392b;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .menu-item input {
+      width: 60px;
+      text-align: center;
+    }
+
+    .total, .points {
+      margin: 15px 0;
+      font-weight: bold;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background: #e75f11;
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .menu-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .menu-item input {
+        margin-top: 5px;
+        width: 100%;
+      }
+
+      .logout-btn {
+        position: static;
+        display: block;
+        margin: 0 auto 10px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+    <h2>Realizar Pedido</h2>
+    <form id="orderForm">
+      <div class="form-group">
+        <label>Nombre *</label>
+        <input type="text" required />
+      </div>
+      <div class="form-group">
+        <label>Teléfono *</label>
+        <input type="tel" required />
+      </div>
+      <div class="form-group">
+        <label>Tipo de Pedido *</label>
+        <select id="orderType" required>
+          <option value="">Seleccionar...</option>
+          <option value="delivery">Domicilio</option>
+          <option value="pickup">Recoger</option>
+        </select>
+      </div>
+      <div class="form-group" id="addressGroup" style="display:none">
+        <label>Dirección *</label>
+        <input type="text" />
+      </div>
+
+      <div class="form-group">
+        <label>Productos</label>
+        <div class="menu-item">
+          <span>Hamburguesa ($18.000)</span>
+          <input type="number" min="0" value="0" data-price="18000" />
+        </div>
+        <div class="menu-item">
+          <span>Perro ($10.000)</span>
+          <input type="number" min="0" value="0" data-price="10000" />
+        </div>
+        <div class="menu-item">
+          <span>Choripapa ($12.000)</span>
+          <input type="number" min="0" value="0" data-price="12000" />
+        </div>
+        <div class="menu-item">
+          <span>Salchipapa ($8.000)</span>
+          <input type="number" min="0" value="0" data-price="8000" />
+        </div>
+        <div class="menu-item">
+          <span>Arepa Rellena ($6.000)</span>
+          <input type="number" min="0" value="0" data-price="6000" />
+        </div>
+        <div class="menu-item">
+          <span>Jugos Naturales ($7.000)</span>
+          <input type="number" min="0" value="0" data-price="7000" />
+        </div>
+        <div class="menu-item">
+          <span>Coca-Cola ($3.500)</span>
+          <input type="number" min="0" value="0" data-price="3500" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Pago *</label>
+        <select required>
+          <option value="">Seleccionar...</option>
+          <option value="cash">Efectivo</option>
+          <option value="card">Tarjeta</option>
+        </select>
+      </div>
+
+      <div class="total" id="totalAmount">$0</div>
+      <div class="points" id="pointsEarned">Puntos acumulados: 0</div>
+      <button type="submit">Confirmar Pedido</button>
+    </form>
+  </div>
+
+  <script>
+    const orderType = document.getElementById('orderType');
+    const addressGroup = document.getElementById('addressGroup');
+    const inputs = document.querySelectorAll('[data-price]');
+    const totalDisplay = document.getElementById('totalAmount');
+    const pointsDisplay = document.getElementById('pointsEarned');
+
+    orderType.addEventListener('change', () => {
+      addressGroup.style.display = orderType.value === 'delivery' ? 'block' : 'none';
+    });
+
+    inputs.forEach(input => {
+      input.addEventListener('input', updateTotal);
+    });
+
+    function updateTotal() {
+      let total = 0;
+      inputs.forEach(i => {
+        total += (parseInt(i.value) || 0) * parseInt(i.dataset.price);
+      });
+
+      const puntos = Math.floor(total / 10000);
+
+      totalDisplay.textContent = `$${total.toLocaleString()}`;
+      pointsDisplay.textContent = `Puntos acumulados: ${puntos}`;
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert('¡Pedido confirmado! Gracias por tu compra.');
+      e.target.reset();
+      updateTotal();
+      addressGroup.style.display = 'none';
+    });
+
+    function cerrarSesion() {
+      alert("Sesión cerrada");
+      window.location.href = "/login"; // cambia esto por la ruta real de tu login
+    }
+
+    updateTotal(); // inicializa puntos y total en 0
+  </script>
+</body>
+</html>
